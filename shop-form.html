@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Now Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #48d4c2, #c3d331,#399fe4);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 15px;
+            color: #000000;
+        }
+        input, textarea, select {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #06bac7;
+        }
+        #captcha-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #captcha-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #15a8c2;
+            margin-right: 10px;
+        }
+        #submit-btn {
+            display: none;
+            padding: 10px 150px;
+            background: linear-gradient(to right, #48d4c2, #276c75);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        #submit-btn:hover {
+            background: #12cf3b;
+        }
+        #thank-you-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #4CAF50;
+            display: none;
+        }
+        #home-btn {
+            display: none;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        #home-btn:hover {
+            background: #005f73;
+        }
+    </style>
+
+    
+</head>
+<body>
+    <div class="form-container">
+        <h2>Shop Now</h2>
+        <form id="shop-form">
+            <form id="shop-form" action="shop-form.php" method="POST"></form>
+            <input type="text" id="name" placeholder="Name to print on Bracelet and bill" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="tel" id="phone" placeholder="Phone" required>
+            
+            <!-- Dropdown for Product Needed -->
+            <select id="product" required>
+                <option value="" disabled selected>Select Product</option>
+                <option value="Product A">Name Customized</option>
+                <option value="Product B">Beads Bracelets</option>
+                <option value="Product C">Chain Bracelets</option>
+                <option value="Product D">Thread Bangle Customized</option>
+                <option value="Product D">Thread Bangle Customized</option>
+            </select>
+            
+            <input type="number" id="quantity" placeholder="Quantity" required>
+            <textarea id="address" placeholder="Address to deliver the Bracelet" rows="3" required></textarea>
+            
+            <div id="captcha-container">
+                <span id="captcha-text"></span>
+                <input type="text" id="captcha-input" placeholder="Enter Captcha" required>
+            </div>
+            
+            <button id="submit-btn" type="submit">Submit</button>
+        </form>
+        <p id="thank-you-message">Thank you! Your request has been placed. We will contact you later.</p>
+        <button id="home-btn" onclick="goToHome()">Go Back to Home</button>
+    </div>
+
+    <script>
+        // Generate and display captcha
+        const captchaText = document.getElementById('captcha-text');
+        const captchaInput = document.getElementById('captcha-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const thankYouMessage = document.getElementById('thank-you-message');
+        const homeBtn = document.getElementById('home-btn');
+
+        function generateCaptcha() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) {
+                captcha += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            captchaText.textContent = captcha;
+        }
+
+        // Show submit button only if captcha is correct
+        captchaInput.addEventListener('input', () => {
+            if (captchaInput.value === captchaText.textContent) {
+                submitBtn.style.display = 'inline-block';
+            } else {
+                submitBtn.style.display = 'none';
+            }
+        });
+
+        // Initialize captcha on load
+        generateCaptcha();
+
+        // Handle form submission
+        document.getElementById('shop-form').addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent form from actually submitting
+            thankYouMessage.style.display = 'block'; // Show thank-you message
+            homeBtn.style.display = 'inline-block'; // Show "Go Back to Home" button
+            document.getElementById('shop-form').reset(); // Clear form inputs
+            submitBtn.style.display = 'none'; // Hide submit button until captcha is solved again
+            generateCaptcha(); // Refresh captcha
+        });
+
+        // Redirect to home function
+        function goToHome() {
+            window.location.href = '/'; // Adjust the path to your homepage
+        }
+    </script>
+</body>
+</html>
